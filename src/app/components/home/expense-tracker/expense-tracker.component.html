@@ -1,0 +1,21 @@
+<table class="table">
+    <thead>
+        <tr>
+        <th scope="col">Date</th>
+        <th scope="col">Description</th>
+        <th scope="col">Category</th>
+        <th scope="col">Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngIf="!expenses || expenses.length === 0">
+            <td colspan="4" style="text-align: center;">No Data</td>
+        </tr>
+        <tr *ngFor="let expense of expenses">
+            <td>{{ expense.date | date }}</td>
+            <td>{{ expense.description }}</td>
+            <td>{{ expense.categoryName }}</td>
+            <td>{{ expense.amount | currency }}</td>
+        </tr>
+    </tbody>
+</table>

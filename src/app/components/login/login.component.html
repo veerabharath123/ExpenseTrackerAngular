@@ -1,0 +1,31 @@
+<!-- <div class="login-container">
+    <div class="tabs">
+      <button (click)="activeTab = 'signIn'" [class.active]="activeTab === 'signIn'">Sign In</button>
+      <button (click)="activeTab = 'signUp'" [class.active]="activeTab === 'signUp'">Sign Up</button>
+    </div>
+  
+    <div class="tab-content">
+      <app-sign-in *ngIf="activeTab === 'signIn'"></app-sign-in>
+      <app-sign-up *ngIf="activeTab === 'signUp'"></app-sign-up>
+    </div>
+  </div> -->
+  <div class="container p-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-4 col-sm-6">
+            <ul class="nav nav-pills">
+                <li class="nav-item">
+                    <a class="nav-link" [class.active]="activeTab === 'signIn'" (click)="activeTab = 'signIn'">Sign In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" [class.active]="activeTab === 'signUp'" (click)="activeTab = 'signUp'">Sign Up</a>
+                </li>
+                </ul>
+              <div class="tab-content">
+                <div class="card p-4">
+                    <app-sign-in *ngIf="activeTab === 'signIn'"></app-sign-in>
+                    <app-sign-up *ngIf="activeTab === 'signUp'"></app-sign-up>
+                </div>
+              </div>
+        </div>
+    </div>
+</div>

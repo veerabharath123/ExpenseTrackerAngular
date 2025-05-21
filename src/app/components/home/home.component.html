@@ -1,0 +1,16 @@
+<div class="row w-100">
+    <div class="col-md-6">
+        <div class="card shadow" >
+            <div class="card-body">
+                <app-expense-tracker></app-expense-tracker>
+            </div>
+        </div>    
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow">
+            <div class="card-body">
+                <p-chart type="bar" [data]="basicData" [options]="basicOptions" />
+            </div>
+        </div>    
+    </div>
+</div>
