@@ -1,21 +1,29 @@
-<table class="table">
-    <thead>
-        <tr>
-        <th scope="col">Date</th>
-        <th scope="col">Description</th>
-        <th scope="col">Category</th>
-        <th scope="col">Amount</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngIf="!expenses || expenses.length === 0">
-            <td colspan="4" style="text-align: center;">No Data</td>
-        </tr>
-        <tr *ngFor="let expense of expenses">
-            <td>{{ expense.date | date }}</td>
-            <td>{{ expense.description }}</td>
-            <td>{{ expense.categoryName }}</td>
-            <td>{{ expense.amount | currency }}</td>
-        </tr>
-    </tbody>
-</table>
+<button class="btn btn-success" (click)="openAddExpenseModal = true">Add</button>
+<div class="scrollable-table">
+    <table class="table">
+        <thead>
+            <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Name</th>
+            <th scope="col">Category</th>
+            <th scope="col">Amount</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="!expenses || expenses.length === 0">
+                <td colspan="4" style="text-align: center;">No Data</td>
+            </tr>
+            <tr *ngFor="let expense of expenses">
+                <td>{{ expense.date |  date:'yyyy-MM-dd' }}</td>
+                <td>{{ expense.name }}</td>
+                <td>{{ expense.categoryName }}</td>
+                <td>{{ expense.amount | currency:'INR':'symbol' }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<p-dialog header="Edit Profile" [modal]="true" [(visible)]="openAddExpenseModal" [style]="{ width: '25rem' }" [draggable]="false"
+    [position]="'center'" (onHide)="onHideModal()" >
+    <app-add-expense (saveExpense)="onSaveExpense($event)"></app-add-expense>
+</p-dialog>

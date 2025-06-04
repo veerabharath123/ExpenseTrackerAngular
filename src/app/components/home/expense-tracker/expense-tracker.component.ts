@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { CategoryResponse } from 'src/app/models/classes/Category.class';
-import { ExpenseResponse } from 'src/app/models/classes/Expense.class';
-import { CategoryService } from 'src/app/services/category-services/category.service';
+import { Component, OnInit,ViewChild } from '@angular/core';
+import { ExpenseRequest, ExpenseResponse } from 'src/app/models/classes/Expense.class';
 import { ExpenseService } from 'src/app/services/expense-services/expense.service';
+import { AddExpenseComponent } from './add-expense/add-expense.component';
 
 @Component({
   selector: 'app-expense-tracker',
@@ -12,9 +11,11 @@ import { ExpenseService } from 'src/app/services/expense-services/expense.servic
 export class ExpenseTrackerComponent implements OnInit {
   
   expenses: ExpenseResponse[] = [];
+  openAddExpenseModal: boolean = false;
+  @ViewChild(AddExpenseComponent) addExpenseComponent!: AddExpenseComponent;  
 
   constructor(
-              private expenseService:ExpenseService
+    private expenseService:ExpenseService
   ) {
 
   }
@@ -39,6 +40,34 @@ export class ExpenseTrackerComponent implements OnInit {
       },
       complete: () => {
         console.log('User expenses fetching completed.');
+      }
+    });
+  }
+  onHideModal() {
+    this.openAddExpenseModal = false;
+    if (this.addExpenseComponent) {
+      this.addExpenseComponent.resetForm();
+    }
+  }
+  onSaveExpense(expense: ExpenseRequest|null) {
+    if(!expense) {
+      return;
+    }
+
+    this.expenseService.AddExpense(expense).subscribe({
+      next: (response) => {
+        if(response.success) {
+          this.getUserExpensesList();
+          this.openAddExpenseModal = false;
+        } else {
+          console.error('Failed to add expense:', response.message);
+        }
+      },
+      error: (error) => {
+        console.error('Error adding expense:', error);
+      },
+      complete: () => {
+        console.log('Expense addition completed.');
       }
     });
   }

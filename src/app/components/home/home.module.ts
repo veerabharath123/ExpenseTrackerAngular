@@ -6,6 +6,7 @@ import { ChartModule } from 'primeng/chart';
 import { CommonModule } from '@angular/common';
 import { AddExpenseComponent } from './expense-tracker/add-expense/add-expense.component';
 import { DialogModule } from 'primeng/dialog';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { DialogModule } from 'primeng/dialog';
     HomeRoutingModule,
     ChartModule,
     DialogModule,
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: []
