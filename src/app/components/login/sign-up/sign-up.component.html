@@ -2,8 +2,16 @@
 <h1>Sign Up</h1>
 <form (ngSubmit)="onSignUp()" [formGroup]="signUpForm">
   <div class="mb-3 mt-3">
-      <label for="name" class="form-label">Name:</label>
-      <input type="text" class="form-control" id="name" placeholder="Enter email" formControlName="name">
+      <label for="name" class="form-label">Username:</label>
+      <input type="text" class="form-control" id="name" placeholder="Enter Username" formControlName="userName">
+    </div>
+    <div class="mb-3 mt-3">
+      <label for="name" class="form-label">FirstName:</label>
+      <input type="text" class="form-control" id="lastname" placeholder="Enter firstName" formControlName="firstName">
+    </div>
+    <div class="mb-3 mt-3">
+      <label for="name" class="form-label">LastName:</label>
+      <input type="text" class="form-control" id="lastname" placeholder="Enter lastName" formControlName="lastName">
     </div>
   <div class="mb-3 mt-3">
     <label for="email" class="form-label">Email:</label>

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ExpenseService } from 'src/app/services/expense-services/expense.service';
 
 @Component({
   selector: 'app-home',
@@ -6,58 +7,106 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
-  basicData: any;
+    basicData: any;
+    note:string = '';
+    rangeDates: Date[]|undefined = [];
+    basicOptions: any;
 
-  basicOptions: any;
+    constructor(private expenseService:ExpenseService) { }
 
-  ngOnInit() {
-    const documentStyle = getComputedStyle(document.documentElement);
-    const textColor = documentStyle.getPropertyValue('--text-color');
-    const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-    const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+    ngOnInit() {
+        this.loadWeeklyExpenseData();
+        this.loadBasicOptions();
+    }
 
-    this.basicData = {
-        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
-        datasets: [
-            {
-                label: 'Sales',
-                data: [540, 325, 702, 620],
-                backgroundColor: ['rgba(255, 159, 64, 0.2)', 'rgba(75, 192, 192, 0.2)', 'rgba(54, 162, 235, 0.2)', 'rgba(153, 102, 255, 0.2)'],
-                borderColor: ['rgb(255, 159, 64)', 'rgb(75, 192, 192)', 'rgb(54, 162, 235)', 'rgb(153, 102, 255)'],
-                borderWidth: 1
-            }
-        ]
-    };
+    loadWeeklyExpenseData() {
+        const today = new Date();
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(today.getDate() - 6);
+        this.rangeDates = [sevenDaysAgo, today];
 
-    this.basicOptions = {
-        plugins: {
-            legend: {
-                labels: {
-                    color: textColor
-                }
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    color: textColorSecondary
-                },
-                grid: {
-                    color: surfaceBorder,
-                    drawBorder: false
+        this.expenseService.GetWeeklyExpense().subscribe({
+            next: (response) => {
+                if (response.success) {
+                this.basicData = response.result?.basicData as any;
+                this.note = response.result?.message || '';
+                    console.log('Weekly expense data:', this.basicData);
+                } else {
+                    console.error('Failed to fetch weekly expense data:', response.message);
                 }
             },
-            x: {
-                ticks: {
-                    color: textColorSecondary
+            error: (error) => {
+                console.error('Error fetching weekly expense data:', error);
+            },
+            complete: () => {
+                console.log('Weekly expense data fetching completed.');
+            }
+        })
+    }
+
+    loadBasicOptions(){
+        const documentStyle = getComputedStyle(document.documentElement);
+        const textColor = documentStyle.getPropertyValue('--text-color');
+        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+        this.basicOptions = {
+            plugins: {
+                legend: {
+                    labels: {
+                        color: textColor
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
                 },
-                grid: {
-                    color: surfaceBorder,
-                    drawBorder: false
+                x: {
+                    ticks: {
+                        color: textColorSecondary
+                    },
+                    grid: {
+                        color: surfaceBorder,
+                        drawBorder: false
+                    }
                 }
             }
+        };
+    }
+    getWeekly(){
+        this.loadWeeklyExpenseData();
+    }
+    getRange(data:any){
+        if (this.rangeDates && this.rangeDates.length === 2 && this.rangeDates[0] && this.rangeDates[1]) {
+            const request = {
+                start: this.rangeDates[0],
+                end: this.rangeDates[1]
+            };
+            this.expenseService.GetExpenseFromDateRange(request).subscribe({
+                next: (response) => {
+                    if (response.success) {
+                    this.basicData = response.result?.basicData as any;
+                    this.note = response.result?.message || '';
+                        console.log('Weekly expense data:', this.basicData);
+                    } else {
+                        console.error('Failed to fetch weekly expense data:', response.message);
+                    }
+                },
+                error: (error) => {
+                    console.error('Error fetching weekly expense data:', error);
+                },
+                complete: () => {
+                    console.log('Weekly expense data fetching completed.');
+                }
+            })
         }
-    };
-}
+    }
 }

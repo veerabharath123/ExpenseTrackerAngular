@@ -8,3 +8,12 @@ export class GenericResponse<T> {
     this.result = result || null;
   }
 }
+
+export class DateRequestDto{
+    date1: Date | null = null;
+    date2: Date | null = null;
+}
+export class DateRangeRequestDto{
+    start: Date | null = null;
+    end: Date | null = null;
+}

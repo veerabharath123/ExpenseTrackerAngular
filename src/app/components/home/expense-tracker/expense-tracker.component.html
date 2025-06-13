@@ -1,26 +1,25 @@
-<button class="btn btn-success" (click)="openAddExpenseModal = true">Add</button>
+<button class="btn btn-success d-none" (click)="openAddExpenseModal = true">Add</button>
+<h6 class="text-dark mb-2">Today's Expense</h6>
 <div class="scrollable-table">
-    <table class="table">
-        <thead>
+    <p-table [value]="expenses" [tableStyle]="{ 'min-width': '20rem' }">
+        <ng-template pTemplate="header">
             <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Name</th>
-            <th scope="col">Category</th>
-            <th scope="col">Amount</th>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Amount</th>
             </tr>
-        </thead>
-        <tbody>
-            <tr *ngIf="!expenses || expenses.length === 0">
-                <td colspan="4" style="text-align: center;">No Data</td>
-            </tr>
-            <tr *ngFor="let expense of expenses">
-                <td>{{ expense.date |  date:'yyyy-MM-dd' }}</td>
+        </ng-template>
+        <!-- Data rows when loaded -->
+        <ng-template pTemplate="body" let-expense >
+            <tr>
+                <td>{{ expense.date | date:'yyyy-MM-dd' }}</td>
                 <td>{{ expense.name }}</td>
                 <td>{{ expense.categoryName }}</td>
                 <td>{{ expense.amount | currency:'INR':'symbol' }}</td>
             </tr>
-        </tbody>
-    </table>
+        </ng-template>
+    </p-table>
 </div>
 
 <p-dialog header="Edit Profile" [modal]="true" [(visible)]="openAddExpenseModal" [style]="{ width: '25rem' }" [draggable]="false"

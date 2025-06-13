@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { safeSubscribe } from '../../../utils/safe-subscribe';
+import { UserService } from 'src/app/services/user-services/user.service';
+import { SignUpRequestDto } from 'src/app/models/classes/User.class';
+import { GenericResponse } from 'src/app/models/classes/generic.class';
 
 @Component({
   selector: 'app-sign-up',
@@ -9,11 +13,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class SignUpComponent {
   signUpForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder,private userServices:UserService) {}
 
   ngOnInit(): void {
     this.signUpForm = this.fb.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
+      userName: ['', [Validators.required, Validators.minLength(3)]],
+      firstName: ['', [Validators.required, Validators.minLength(3)]],
+      lastName: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]]
@@ -27,12 +33,27 @@ export class SignUpComponent {
   }
 
   onSignUp(): void {
-    if (this.signUpForm.valid) {
-      const { name, email, password } = this.signUpForm.value;
-      console.log('Sign Up:', { name, email, password });
-      // Add registration logic here
-    } else {
+    if (this.signUpForm.invalid) {
       console.error('Form is invalid');
+      return;
     }
+
+    const request = this.signUpForm.value as SignUpRequestDto;
+  
+    this.userServices.login(request).subscribe({
+      next: (response) => {
+        if (response.success) {
+          console.log('Sign up successful');
+        } else {
+          console.error('Sign up failed:', response.message);
+        }
+      },
+      error: (error) => {
+        console.error('Error fetching categories:', error);
+      },
+      complete: () => {
+        console.log('Category fetching completed.');
+      }
+    });
   }
 }

@@ -1,6 +1,7 @@
 <div class="row w-100">
+    
     <div class="col-md-6">
-        <div class="card shadow" >
+       <div class="card shadow" >
             <div class="card-body">
                 <app-expense-tracker></app-expense-tracker>
             </div>
@@ -9,8 +10,17 @@
     <div class="col-md-6">
         <div class="card shadow">
             <div class="card-body">
+                <div class="col-8 d-flex justify-content-end mb-2">
+                    <button (click)="getWeekly()" class="btn btn-secondary">Last 7 days</button>
+                    <p-calendar selectionMode="range" [readonlyInput]="true" [(ngModel)]="rangeDates" (onSelect)="getRange($event)"  />
+                </div>
                 <p-chart type="bar" [data]="basicData" [options]="basicOptions" />
+                <label class="text-muted mt-2" *ngIf="note">{{ note }}</label>
             </div>
         </div>    
     </div>
+    
 </div>
+
+
+    

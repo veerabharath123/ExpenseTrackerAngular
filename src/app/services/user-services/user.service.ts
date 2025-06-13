@@ -1,27 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from '../auth-services/auth.service';
+import { SignUpRequestDto } from 'src/app/models/classes/User.class';
+import { ApiService } from '../api-services/api.service';
+import { GenericResponse } from 'src/app/models/classes/generic.class';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  constructor(private authService:AuthService) { }
+  constructor(private apiServices:ApiService) { }
 
-  login(username: string, password: string): Observable<boolean> {
-    return new Observable<boolean>(observer => {
-      // Simulate an API call
-      setTimeout(() => {
-        if (username === 'username' && password === 'password') {
-          this.authService.setCurrentUser({ username: username, token: '1234567890', permissions: ['read', 'write'], roles: ['admin'] });
-          observer.next(true);
-        } else {
-          observer.next(false);
-        }
-        observer.complete();
-      }, 1000);
-    }
-    );  
+  login(request: SignUpRequestDto): Observable<GenericResponse<boolean>> {
+    return this.apiServices.post<boolean>('User/InsertUser', request, false)
   }
 }

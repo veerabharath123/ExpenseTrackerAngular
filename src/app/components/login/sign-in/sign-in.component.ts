@@ -31,13 +31,13 @@ export class SignInComponent {
     }
 
     const { username, password } = this.signInForm.value;
-    this.userService.login(username, password).subscribe(r =>{
-      if (r) {
-        console.log('Login successful');
-        this.router.navigate(['/home']);
-      } else {
-        console.error('Login failed');
-      }
-    })
+    // this.userService.login(username, password).subscribe(r =>{
+    //   if (r) {
+    //     console.log('Login successful');
+    //     this.router.navigate(['/home']);
+    //   } else {
+    //     console.error('Login failed');
+    //   }
+    // })
   }
 }
