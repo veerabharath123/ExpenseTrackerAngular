@@ -1,5 +1,5 @@
 export interface AuthUser {
-    username: string;
+    userName: string;
     token: string;
 }
   

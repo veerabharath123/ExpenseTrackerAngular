@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { SignInRequestDto } from 'src/app/models/classes/User.class';
+import { AuthService } from 'src/app/services/auth-services/auth.service';
 import { UserService } from 'src/app/services/user-services/user.service';
 
 @Component({
@@ -14,6 +16,7 @@ export class SignInComponent {
   constructor(private fb: FormBuilder,
     private userService: UserService,
     private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -30,14 +33,17 @@ export class SignInComponent {
       return;
     }
 
-    const { username, password } = this.signInForm.value;
-    // this.userService.login(username, password).subscribe(r =>{
-    //   if (r) {
-    //     console.log('Login successful');
-    //     this.router.navigate(['/home']);
-    //   } else {
-    //     console.error('Login failed');
-    //   }
-    // })
+    const request = this.signInForm.value as SignInRequestDto;
+    this.userService.login(request).subscribe(r =>{
+      if (r) {
+        if(r.success) {
+          this.authService.setCurrentUser(r.result!);
+          console.log('Login successful',r);
+          this.router.navigate(['/home']);
+        }
+      } else {
+        console.error('Login failed');
+      }
+    })
   }
 }

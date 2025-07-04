@@ -16,20 +16,25 @@
             <a class="nav-link" href="javascript:void(0)">Modules</a>
           </li>
         </ul>
-        <form class="d-flex">
+        <form class="d-flex me-2">
           <input class="form-control me-2" type="text" placeholder="Search">
           <button class="btn btn-primary" type="button">Search</button>
         </form>
       </div>
-      <div class="dropdown">
+      <div class="dropdown dropstart" id="userDropdown">
         <a class="navbar-brand" href="javascript:void(0)" data-bs-toggle="dropdown">
             <img src="../../../../assets/images/pfp.png" alt="Avatar Logo" style="width:40px;" class="rounded-pill"> 
           </a>
         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-          <li><a class="dropdown-item" href="#">{{'@username'}}</a></li>
+          <li><span class="dropdown-item-text"><b>{{'@' + currentUser}}</b></span></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href="#">Another action</a></li>
-          <li><a class="dropdown-item" href="#">Something else here</a></li>
+          <li><a class="dropdown-item" href="#"><i class="bi bi-person-circle me-2 text-primary"></i> Manage account</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li>
+            <button class="dropdown-item" (click)="onLogout()" id="logoutButton">
+               <i class="bi bi-box-arrow-right me-2 text-success"></i> Logout
+            </button>
+          </li>
         </ul>
       </div>
     </div>
